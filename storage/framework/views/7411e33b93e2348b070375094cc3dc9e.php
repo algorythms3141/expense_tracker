@@ -61,7 +61,7 @@
             </div>
 
             <div class="mt-3">
-                <?php echo e($income->links()); ?>
+                <?php echo e($income->links('vendor.pagination.bootstrap-5')); ?>
 
             </div>
         <?php else: ?>
@@ -77,6 +77,5 @@
 </div>
 <?php $__env->stopSection(); ?>
 
-// Made with Bob
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\expense\resources\views/income/index.blade.php ENDPATH**/ ?>

@@ -45,4 +45,3 @@ class Category extends Model
     }
 }
 
-// Made with Bob

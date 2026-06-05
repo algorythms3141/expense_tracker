@@ -43,4 +43,3 @@ class Income extends Model
     }
 }
 
-// Made with Bob

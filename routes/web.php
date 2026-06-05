@@ -54,4 +54,3 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/export/category', [ReportController::class, 'exportCategory'])->name('reports.export.category');
 });
 
-// Made with Bob

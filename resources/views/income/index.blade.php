@@ -61,7 +61,7 @@
             </div>
 
             <div class="mt-3">
-                {{ $income->links() }}
+                {{ $income->links('vendor.pagination.bootstrap-5') }}
             </div>
         @else
             <div class="text-center py-5 text-muted">
@@ -76,4 +76,3 @@
 </div>
 @endsection
 
-// Made with Bob

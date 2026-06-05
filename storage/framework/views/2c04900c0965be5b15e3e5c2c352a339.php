@@ -105,5 +105,4 @@
 </body>
 </html>
 
-// Made with Bob
 <?php /**PATH C:\xampp\htdocs\expense\resources\views/layouts/guest.blade.php ENDPATH**/ ?>

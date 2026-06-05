@@ -5,29 +5,29 @@
 
 <?php $__env->startSection('content'); ?>
 <!-- Summary Cards -->
-<div class="row mb-4">
-    <div class="col-md-3 col-sm-6">
+<div class="row mb-4 g-3">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="stat-card income">
             <h6>Total Income</h6>
             <h3>₹<?php echo e(number_format($totalIncome, 2)); ?></h3>
             <small><i class="bi bi-arrow-up-circle"></i> All time</small>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="stat-card expense">
             <h6>Total Expenses</h6>
             <h3>₹<?php echo e(number_format($totalExpenses, 2)); ?></h3>
             <small><i class="bi bi-arrow-down-circle"></i> All time</small>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="stat-card savings">
             <h6>Total Savings</h6>
             <h3>₹<?php echo e(number_format($totalSavings, 2)); ?></h3>
             <small><i class="bi bi-piggy-bank"></i> Net balance</small>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="stat-card monthly">
             <h6>This Month</h6>
             <h3>₹<?php echo e(number_format($currentMonthExpenses, 2)); ?></h3>
@@ -36,27 +36,51 @@
     </div>
 </div>
 
-<!-- Charts -->
+<!-- Today's Expenses Card -->
 <div class="row mb-4">
-    <div class="col-md-6 mb-3">
-        <div class="card">
+    <div class="col-12">
+        <div class="card border-start border-primary border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title mb-1">
+                            <i class="bi bi-calendar-day text-primary"></i> Today's Expenses
+                        </h5>
+                        <p class="text-muted mb-0 small"><?php echo e(now()->format('l, F j, Y')); ?></p>
+                    </div>
+                    <div class="text-end">
+                        <h2 class="mb-0 text-primary">₹<?php echo e(number_format($todayExpenses, 2)); ?></h2>
+                        <a href="<?php echo e(route('expenses.create')); ?>" class="btn btn-sm btn-primary mt-2">
+                            <i class="bi bi-plus-circle"></i> Add Expense
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row mb-4 g-3">
+    <div class="col-lg-6 col-md-12 mb-3">
+        <div class="card h-100">
             <div class="card-body">
                 <h5 class="card-title mb-4">
                     <i class="bi bi-pie-chart me-2"></i>Category-wise Expenses
                 </h5>
-                <div style="position: relative; height: 300px;">
+                <div class="chart-container" style="position: relative; height: 300px;">
                     <canvas id="categoryChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6 mb-3">
-        <div class="card">
+    <div class="col-lg-6 col-md-12 mb-3">
+        <div class="card h-100">
             <div class="card-body">
                 <h5 class="card-title mb-4">
                     <i class="bi bi-graph-up me-2"></i>Monthly Expense Trend
                 </h5>
-                <div style="position: relative; height: 300px;">
+                <div class="chart-container" style="position: relative; height: 300px;">
                     <canvas id="trendChart"></canvas>
                 </div>
             </div>
@@ -73,28 +97,35 @@
         
         <?php if($recentTransactions->count() > 0): ?>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th>Date</th>
+                            <th class="d-none d-md-table-cell">Date</th>
                             <th>Category</th>
-                            <th>Merchant/Source</th>
-                            <th>Type</th>
+                            <th class="d-none d-sm-table-cell">Merchant/Source</th>
+                            <th class="d-none d-lg-table-cell">Type</th>
                             <th class="text-end">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $__currentLoopData = $recentTransactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td><?php echo e(\Carbon\Carbon::parse($transaction['date'])->format('M d, Y')); ?></td>
+                                <td class="d-none d-md-table-cell">
+                                    <small><?php echo e(\Carbon\Carbon::parse($transaction['date'])->format('M d, Y')); ?></small>
+                                </td>
                                 <td>
-                                    <span class="badge" style="background-color: <?php echo e($transaction['color']); ?>">
+                                    <span class="badge" style="background-color: <?php echo e($transaction['color']); ?>; font-size: 0.75rem;">
                                         <?php echo e($transaction['category']); ?>
 
                                     </span>
+                                    <div class="d-md-none">
+                                        <small class="text-muted"><?php echo e(\Carbon\Carbon::parse($transaction['date'])->format('M d')); ?></small>
+                                    </div>
                                 </td>
-                                <td><?php echo e($transaction['merchant']); ?></td>
-                                <td>
+                                <td class="d-none d-sm-table-cell">
+                                    <small><?php echo e($transaction['merchant']); ?></small>
+                                </td>
+                                <td class="d-none d-lg-table-cell">
                                     <?php if($transaction['type'] === 'Income'): ?>
                                         <span class="badge bg-success">Income</span>
                                     <?php else: ?>
@@ -107,6 +138,9 @@
                                     <?php else: ?>
                                         <span class="text-danger">-₹<?php echo e(number_format($transaction['amount'], 2)); ?></span>
                                     <?php endif; ?>
+                                    <div class="d-sm-none">
+                                        <small class="text-muted"><?php echo e($transaction['merchant']); ?></small>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -220,6 +254,5 @@
 </script>
 <?php $__env->stopPush(); ?>
 
-// Made with Bob
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\expense\resources\views/dashboard/index.blade.php ENDPATH**/ ?>

@@ -28,6 +28,11 @@ class DashboardController extends Controller
             ->whereYear('date', $currentYear)
             ->sum('amount');
 
+        // Today's expenses
+        $todayExpenses = Expense::forUser($user->id)
+            ->whereDate('date', now()->toDateString())
+            ->sum('amount');
+
         // Category-wise expenses for pie chart
         $categoryExpenses = Expense::where('expenses.user_id', $user->id)
             ->select('categories.name', 'categories.color', DB::raw('SUM(expenses.amount) as total'))
@@ -94,6 +99,7 @@ class DashboardController extends Controller
             'totalExpenses',
             'totalSavings',
             'currentMonthExpenses',
+            'todayExpenses',
             'categoryExpenses',
             'monthlyTrend',
             'recentTransactions'
@@ -101,4 +107,3 @@ class DashboardController extends Controller
     }
 }
 
-// Made with Bob

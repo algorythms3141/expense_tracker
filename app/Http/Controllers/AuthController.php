@@ -127,4 +127,3 @@ class AuthController extends Controller
     }
 }
 
-// Made with Bob

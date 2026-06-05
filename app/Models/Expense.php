@@ -52,4 +52,3 @@ class Expense extends Model
     }
 }
 
-// Made with Bob

@@ -71,4 +71,3 @@ class Budget extends Model
     }
 }
 
-// Made with Bob

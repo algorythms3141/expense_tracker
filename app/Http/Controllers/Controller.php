@@ -7,4 +7,3 @@ abstract class Controller
     //
 }
 
-// Made with Bob

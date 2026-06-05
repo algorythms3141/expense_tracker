@@ -4,54 +4,81 @@
 <?php $__env->startSection('page-title', 'Expenses'); ?>
 
 <?php $__env->startSection('content'); ?>
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="mb-1"><i class="bi bi-cash-coin me-2"></i>Expenses</h4>
+        <p class="text-muted mb-0 small">Manage your expense records</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+            <i class="bi bi-funnel me-1"></i> Filter
+        </button>
+        <a href="<?php echo e(route('expenses.create')); ?>" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> <span class="d-none d-sm-inline">Add </span>Expense
+        </a>
+    </div>
+</div>
+
 <div class="card">
     <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="card-title mb-0">
-                <i class="bi bi-cash-coin me-2"></i>Expense List
-            </h5>
-            <a href="<?php echo e(route('expenses.create')); ?>" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Add Expense
-            </a>
-        </div>
 
         <!-- Search and Filter -->
-        <form method="GET" action="<?php echo e(route('expenses.index')); ?>" class="mb-4">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <input type="text" name="search" class="form-control" 
-                           placeholder="Search..." value="<?php echo e(request('search')); ?>">
-                </div>
-                <div class="col-md-3">
-                    <select name="category_id" class="form-select">
-                        <option value="">All Categories</option>
-                        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($category->id); ?>" 
-                                <?php echo e(request('category_id') == $category->id ? 'selected' : ''); ?>>
-                                <?php echo e($category->icon); ?> <?php echo e($category->name); ?>
+        <div class="mb-4">
 
-                            </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <input type="date" name="start_date" class="form-control" 
-                           placeholder="Start Date" value="<?php echo e(request('start_date')); ?>">
-                </div>
-                <div class="col-md-2">
-                    <input type="date" name="end_date" class="form-control" 
-                           placeholder="End Date" value="<?php echo e(request('end_date')); ?>">
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-search me-2"></i>Filter
-                    </button>
-                </div>
+            <!-- Collapsible Filter Form -->
+            <div class="collapse d-md-block" id="filterCollapse">
+                <form method="GET" action="<?php echo e(route('expenses.index')); ?>">
+                    <div class="row g-3">
+                        <div class="col-md-3 col-12">
+                            <input type="text" name="search" class="form-control"
+                                   placeholder="Search..." value="<?php echo e(request('search')); ?>">
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <select name="category_id" class="form-select">
+                                <option value="">All Categories</option>
+                                <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($category->id); ?>"
+                                        <?php echo e(request('category_id') == $category->id ? 'selected' : ''); ?>>
+                                        <?php echo e($category->icon); ?> <?php echo e($category->name); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <input type="date" name="start_date" class="form-control"
+                                   placeholder="Start Date" value="<?php echo e(request('start_date')); ?>">
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <input type="date" name="end_date" class="form-control"
+                                   placeholder="End Date" value="<?php echo e(request('end_date')); ?>">
+                        </div>
+                        <div class="col-md-2 col-12">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search me-2"></i>Apply Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
 
         <?php if($expenses->count() > 0): ?>
-            <div class="table-responsive">
+            <!-- Mobile Total Card - Show at top on mobile -->
+            <div class="d-md-none mb-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Total Expenses:</h6>
+                            <h4 class="mb-0 fw-bold">₹<?php echo e(number_format($expenses->sum('amount'), 2)); ?></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Table View -->
+            <div class="table-responsive d-none d-md-block">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -74,7 +101,7 @@
                                     </span>
                                 </td>
                                 <td><?php echo e($expense->merchant ?? '-'); ?></td>
-                                <td><?php echo e(Str::limit($expense->notes ?? '-', 30)); ?></td>
+                                <td><?php echo e(Str::limit($expense->notes ?? '-', 40)); ?></td>
                                 <td class="text-end fw-bold">₹<?php echo e(number_format($expense->amount, 2)); ?></td>
                                 <td class="text-center">
                                     <a href="<?php echo e(route('expenses.edit', $expense)); ?>" class="btn btn-sm btn-outline-primary">
@@ -83,7 +110,7 @@
                                     <form action="<?php echo e(route('expenses.destroy', $expense)); ?>" method="POST" class="d-inline">
                                         <?php echo csrf_field(); ?>
                                         <?php echo method_field('DELETE'); ?>
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
                                                 onclick="return confirm('Are you sure you want to delete this expense?')">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -102,8 +129,68 @@
                 </table>
             </div>
 
+            <!-- Mobile Card View -->
+            <div class="d-md-none">
+                <?php $__currentLoopData = $expenses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $expense): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="card mb-3 shadow-sm border-start border-4" style="border-left-color: <?php echo e($expense->category->color); ?> !important; background: linear-gradient(to right, <?php echo e($expense->category->color); ?>15, white);">
+                        <div class="card-body pb-2">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <span class="badge" style="background-color: <?php echo e($expense->category->color); ?>">
+                                        <?php echo e($expense->category->icon); ?> <?php echo e($expense->category->name); ?>
+
+                                    </span>
+                                </div>
+                                <h5 class="mb-0 text-danger fw-bold">₹<?php echo e(number_format($expense->amount, 2)); ?></h5>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar3"></i> <?php echo e($expense->date->format('M d, Y')); ?>
+
+                                </small>
+                            </div>
+                            
+                            <?php if($expense->merchant): ?>
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-shop"></i> <?php echo e($expense->merchant); ?>
+
+                                    </small>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <?php if($expense->notes): ?>
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-sticky"></i> <?php echo e(Str::limit($expense->notes, 60)); ?>
+
+                                    </small>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="d-flex gap-2 mt-2">
+                                <div class="flex-fill">
+                                    <a href="<?php echo e(route('expenses.edit', $expense)); ?>" class="btn btn-sm btn-primary w-100">
+                                        <i class="bi bi-pencil me-1"></i> Edit
+                                    </a>
+                                </div>
+                                <form action="<?php echo e(route('expenses.destroy', $expense)); ?>" method="POST" class="flex-fill">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
+                                    <button type="submit" class="btn btn-sm btn-danger w-100"
+                                            onclick="return confirm('Are you sure you want to delete this expense?')">
+                                        <i class="bi bi-trash me-1"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+
             <div class="mt-3">
-                <?php echo e($expenses->links()); ?>
+                <?php echo e($expenses->links('vendor.pagination.bootstrap-5')); ?>
 
             </div>
         <?php else: ?>
@@ -119,6 +206,5 @@
 </div>
 <?php $__env->stopSection(); ?>
 
-// Made with Bob
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\expense\resources\views/expenses/index.blade.php ENDPATH**/ ?>

@@ -143,6 +143,7 @@ Replace `YOUR_USERNAME` and `YOUR_REPO_NAME` with your actual GitHub username an
 ```bash
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 ```
+https://github.com/algorythms3141/expense_tracker.git
 
 **Example:**
 ```bash

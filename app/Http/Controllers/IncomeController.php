@@ -83,4 +83,3 @@ class IncomeController extends Controller
     }
 }
 
-// Made with Bob

@@ -41,4 +41,3 @@ class CategorySeeder extends Seeder
     }
 }
 
-// Made with Bob

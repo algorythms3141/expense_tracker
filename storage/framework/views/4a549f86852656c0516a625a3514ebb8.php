@@ -16,11 +16,13 @@
     <style>
         :root {
             --sidebar-width: 250px;
+            --top-navbar-height: 60px;
         }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
+            padding-top: 0;
         }
         
         html, body {
@@ -29,11 +31,54 @@
             padding: 0;
         }
         
-        .sidebar {
+        /* Fixed Top Navbar */
+        .top-fixed-navbar {
             position: fixed;
             top: 0;
             left: 0;
-            height: 100vh;
+            right: 0;
+            height: var(--top-navbar-height);
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1050;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        
+        .app-logo {
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .app-logo i {
+            font-size: 1.8rem;
+        }
+        
+        .mobile-menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #667eea;
+            cursor: pointer;
+            padding: 5px 10px;
+            display: none;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: var(--top-navbar-height);
+            left: 0;
+            height: calc(100vh - var(--top-navbar-height));
             width: var(--sidebar-width);
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px 0;
@@ -42,14 +87,6 @@
             overflow-y: auto;
         }
         
-        .sidebar .brand {
-            padding: 0 20px 20px;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 20px;
-        }
         
         .sidebar .nav-link {
             color: rgba(255,255,255,0.8);
@@ -75,8 +112,9 @@
         
         .main-content {
             margin-left: var(--sidebar-width);
-            min-height: 100vh;
-            background: #f8f9fa;
+            margin-top: var(--top-navbar-height);
+            min-height: calc(100vh - var(--top-navbar-height));
+            background: white;
         }
         
         .top-navbar {
@@ -89,7 +127,7 @@
         }
         
         .content-area {
-            padding: 30px;
+            padding: 1px 30px 30px 30px;
         }
         
         .card {
@@ -158,7 +196,7 @@
         }
         
         [data-bs-theme="dark"] .main-content {
-            background: #1a1a2e;
+            background: #16213e;
         }
         
         [data-bs-theme="dark"] .top-navbar {
@@ -179,19 +217,81 @@
             
             .sidebar.show {
                 transform: translateX(0);
+                top: var(--top-navbar-height);
             }
             
             .main-content {
                 margin-left: 0;
+                margin-top: var(--top-navbar-height);
             }
             
             .mobile-toggle {
                 display: block !important;
             }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .app-logo {
+                font-size: 1.2rem;
+            }
+            
+            .app-logo i {
+                font-size: 1.5rem;
+            }
+            
+            .content-area {
+                padding: 10px 15px 15px 15px;
+            }
+            
+            .stat-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .stat-card h6 {
+                font-size: 0.85rem;
+            }
+            
+            .card-title {
+                font-size: 1rem;
+            }
+            
+            .table {
+                font-size: 0.875rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .content-area {
+                padding: 8px 10px 10px 10px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-card h3 {
+                font-size: 1.25rem;
+            }
+            
+            .top-navbar {
+                padding: 10px 15px;
+            }
+            
+            .chart-container {
+                height: 250px !important;
+            }
         }
         
         .mobile-toggle {
             display: none;
+        }
+        
+        /* Responsive chart containers */
+        .chart-container canvas {
+            max-width: 100%;
+            height: auto !important;
         }
         
         .progress {
@@ -203,16 +303,139 @@
             border-radius: 8px;
             border: none;
         }
+        
+        /* Pagination Styles */
+        .pagination {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .pagination .page-link {
+            color: #667eea;
+            border: 1px solid #dee2e6;
+            padding: 8px 16px;
+            margin: 0 2px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .pagination .page-link:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: white;
+        }
+        
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #fff;
+            border-color: #dee2e6;
+            cursor: not-allowed;
+        }
+        
+        /* Hide all SVG and icons in pagination */
+        .pagination svg,
+        .pagination i,
+        .pagination .page-link svg,
+        .pagination .page-link i,
+        .pagination path,
+        .pagination .page-link path {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            opacity: 0 !important;
+        }
+        
+        /* Force pagination links to show only text */
+        .pagination .page-link * {
+            display: none !important;
+        }
+        
+        .pagination .page-link {
+            font-size: 0 !important;
+        }
+        
+        .pagination .page-link::before {
+            font-size: 0.875rem !important;
+        }
+        
+        /* Show text content for Previous button */
+        .pagination .page-item:first-child .page-link::before {
+            content: 'Previous';
+            font-size: 0.875rem;
+        }
+        
+        /* Show text content for Next button */
+        .pagination .page-item:last-child .page-link::before {
+            content: 'Next';
+            font-size: 0.875rem;
+        }
+        
+        /* Show page numbers */
+        .pagination .page-item:not(:first-child):not(:last-child) .page-link {
+            font-size: 0.875rem !important;
+        }
+        
+        /* Mobile pagination */
+        @media (max-width: 576px) {
+            .pagination .page-link {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .pagination .page-item:not(.active):not(:first-child):not(:last-child) {
+                display: none;
+            }
+        }
     </style>
     
     <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>
+    <!-- Fixed Top Navbar -->
+    <nav class="top-fixed-navbar">
+        <button class="mobile-menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('show')">
+            <i class="bi bi-list"></i>
+        </button>
+        <a href="<?php echo e(route('dashboard')); ?>" class="app-logo">
+            <i class="bi bi-wallet2"></i>
+            <span>Expense Tracker</span>
+        </a>
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-link p-0" onclick="toggleTheme()" title="Toggle Dark Mode">
+                <i class="bi bi-moon-stars fs-5" id="theme-icon" style="color: #667eea;"></i>
+            </button>
+            <div class="dropdown">
+                <button class="btn btn-link p-0 dropdown-toggle text-decoration-none" type="button" data-bs-toggle="dropdown" style="color: #667eea;">
+                    <i class="bi bi-person-circle fs-5"></i>
+                    <span class="ms-2 d-none d-md-inline"><?php echo e(Auth::user()->name); ?></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="<?php echo e(route('profile')); ?>">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="brand">
-            <i class="bi bi-wallet2"></i> Expense Tracker
-        </div>
         <nav class="nav flex-column">
             <a href="<?php echo e(route('dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>">
                 <i class="bi bi-speedometer2"></i> Dashboard
@@ -246,36 +469,6 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Navbar -->
-        <div class="top-navbar">
-            <div>
-                <button class="btn btn-link mobile-toggle" onclick="toggleSidebar()">
-                    <i class="bi bi-list fs-4"></i>
-                </button>
-                <span class="fs-5 fw-bold"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?></span>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-link" onclick="toggleTheme()" title="Toggle Dark Mode">
-                    <i class="bi bi-moon-stars fs-5" id="theme-icon"></i>
-                </button>
-                <div class="dropdown">
-                    <button class="btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle fs-5"></i>
-                        <span class="ms-2"><?php echo e(Auth::user()->name); ?></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="<?php echo e(route('profile')); ?>">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
         <!-- Content Area -->
         <div class="content-area">
             <?php if(session('success')): ?>
@@ -345,5 +538,4 @@
 </body>
 </html>
 
-// Made with Bob
 <?php /**PATH C:\xampp\htdocs\expense\resources\views/layouts/app.blade.php ENDPATH**/ ?>

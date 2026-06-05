@@ -88,4 +88,3 @@ class CategoryController extends Controller
     }
 }
 
-// Made with Bob
