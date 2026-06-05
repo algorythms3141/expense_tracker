@@ -18,6 +18,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 15px;
         }
         
         .auth-card {
@@ -38,10 +39,12 @@
             color: #667eea;
             font-weight: bold;
             margin-bottom: 10px;
+            font-size: 1.75rem;
         }
         
         .auth-header p {
             color: #6c757d;
+            font-size: 0.95rem;
         }
         
         .form-control {
@@ -71,6 +74,7 @@
             text-align: center;
             margin-top: 20px;
             color: #6c757d;
+            font-size: 0.9rem;
         }
         
         .auth-footer a {
@@ -92,6 +96,62 @@
             font-size: 3rem;
             color: #667eea;
             margin-bottom: 10px;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .auth-card {
+                padding: 25px 20px;
+                border-radius: 12px;
+            }
+            
+            .auth-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .auth-header p {
+                font-size: 0.875rem;
+            }
+            
+            .brand-icon {
+                font-size: 2.5rem;
+            }
+            
+            .form-control {
+                padding: 10px;
+                font-size: 0.95rem;
+            }
+            
+            .btn-primary {
+                padding: 10px;
+                font-size: 0.95rem;
+            }
+            
+            .auth-footer {
+                font-size: 0.85rem;
+            }
+            
+            .form-label {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 375px) {
+            .auth-card {
+                padding: 20px 15px;
+            }
+            
+            .auth-header h1 {
+                font-size: 1.35rem;
+            }
+            
+            .brand-icon {
+                font-size: 2.25rem;
+            }
         }
     </style>
 </head>

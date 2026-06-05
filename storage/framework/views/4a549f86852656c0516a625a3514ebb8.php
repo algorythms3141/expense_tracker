@@ -127,7 +127,7 @@
         }
         
         .content-area {
-            padding: 1px 30px 30px 30px;
+            padding: 25px 30px 30px 30px;
         }
         
         .card {
