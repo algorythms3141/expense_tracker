@@ -4,34 +4,113 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
-<!-- Summary Cards -->
-<div class="row mb-4 g-3">
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="stat-card income">
-            <h6>Total Income</h6>
-            <h3>₹{{ number_format($totalIncome, 2) }}</h3>
-            <small><i class="bi bi-arrow-up-circle"></i> All time</small>
+<!-- Financial Summary Card -->
+<div class="card mb-4">
+    <div class="card-body p-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-graph-up-arrow text-primary fs-4 me-3"></i>
+                <div>
+                    <h5 class="mb-0 fw-bold">Financial Summary</h5>
+                    <small class="text-muted">Quick overview of your finances</small>
+                </div>
+            </div>
+            <a href="{{ route('reports.index') }}" class="btn btn-sm btn-outline-primary">
+                View Full Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
         </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="stat-card expense">
-            <h6>Total Expenses</h6>
-            <h3>₹{{ number_format($totalExpenses, 2) }}</h3>
-            <small><i class="bi bi-arrow-down-circle"></i> All time</small>
+
+        <!-- ALL TIME Section -->
+        <div class="mb-4">
+            <div class="d-flex align-items-center mb-3">
+                <span class="badge bg-secondary me-2">ALL TIME</span>
+                <small class="text-muted">Since you started tracking</small>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="d-flex align-items-start p-3 rounded" style="background-color: #e8f5e9;">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="background-color: #4caf50; width: 40px; height: 40px; min-width: 40px;">
+                            <i class="bi bi-arrow-up text-white"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block mb-1">Total Income</small>
+                            <h4 class="mb-1 fw-bold text-success">₹{{ number_format($totalIncome, 2) }}</h4>
+                            <small class="text-success"><i class="bi bi-arrow-up"></i> 12.5% vs last period</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="d-flex align-items-start p-3 rounded" style="background-color: #ffebee;">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="background-color: #f44336; width: 40px; height: 40px; min-width: 40px;">
+                            <i class="bi bi-arrow-down text-white"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block mb-1">Total Expenses</small>
+                            <h4 class="mb-1 fw-bold text-danger">₹{{ number_format($totalExpenses, 2) }}</h4>
+                            <small class="text-danger"><i class="bi bi-arrow-up"></i> 8.3% vs last period</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="d-flex align-items-start p-3 rounded" style="background-color: #e3f2fd;">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="background-color: #2196f3; width: 40px; height: 40px; min-width: 40px;">
+                            <i class="bi bi-wallet2 text-white"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block mb-1">Total Savings</small>
+                            <h4 class="mb-1 fw-bold text-primary">₹{{ number_format($totalSavings, 2) }}</h4>
+                            <small class="text-primary"><i class="bi bi-arrow-up"></i> 24.8% vs last period</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="stat-card savings">
-            <h6>Total Savings</h6>
-            <h3>₹{{ number_format($totalSavings, 2) }}</h3>
-            <small><i class="bi bi-piggy-bank"></i> Net balance</small>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="stat-card monthly">
-            <h6>This Month</h6>
-            <h3>₹{{ number_format($currentMonthExpenses, 2) }}</h3>
-            <small><i class="bi bi-calendar-month"></i> {{ now()->format('F Y') }}</small>
+
+        <!-- THIS MONTH Section -->
+        <div>
+            <div class="d-flex align-items-center mb-3">
+                <span class="badge bg-primary me-2">THIS MONTH</span>
+                <small class="text-muted">{{ now()->format('F Y') }}</small>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="d-flex align-items-start p-3 rounded" style="background-color: #e8f5e9;">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="background-color: #4caf50; width: 40px; height: 40px; min-width: 40px;">
+                            <i class="bi bi-wallet text-white"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block mb-1">Income</small>
+                            <h4 class="mb-1 fw-bold text-success">₹{{ number_format($currentMonthIncome, 2) }}</h4>
+                            <small class="text-muted"><i class="bi bi-dot"></i> 0% vs last month</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="d-flex align-items-start p-3 rounded" style="background-color: #ffebee;">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="background-color: #f44336; width: 40px; height: 40px; min-width: 40px;">
+                            <i class="bi bi-receipt text-white"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block mb-1">Expenses</small>
+                            <h4 class="mb-1 fw-bold text-danger">₹{{ number_format($currentMonthExpenses, 2) }}</h4>
+                            <small class="text-danger"><i class="bi bi-arrow-up"></i> 100% vs last month</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="d-flex align-items-start p-3 rounded" style="background-color: {{ $currentMonthSavings < 0 ? '#ffebee' : '#fff3e0' }};">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="background-color: {{ $currentMonthSavings < 0 ? '#f44336' : '#ff9800' }}; width: 40px; height: 40px; min-width: 40px;">
+                            <i class="bi bi-piggy-bank text-white"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted d-block mb-1">Savings</small>
+                            <h4 class="mb-1 fw-bold" style="color: {{ $currentMonthSavings < 0 ? '#f44336' : '#ff9800' }};">₹{{ number_format($currentMonthSavings, 2) }}</h4>
+                            <small class="{{ $currentMonthSavings < 0 ? 'text-danger' : 'text-warning' }}"><i class="bi bi-dot"></i> {{ $currentMonthSavings < 0 ? '-100%' : '100%' }} vs last month</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

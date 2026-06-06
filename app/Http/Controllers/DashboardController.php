@@ -22,11 +22,20 @@ class DashboardController extends Controller
         $totalExpenses = Expense::forUser($user->id)->sum('amount');
         $totalSavings = $totalIncome - $totalExpenses;
 
+        // Current month income
+        $currentMonthIncome = Income::forUser($user->id)
+            ->whereMonth('date', $currentMonth)
+            ->whereYear('date', $currentYear)
+            ->sum('amount');
+
         // Current month expenses
         $currentMonthExpenses = Expense::forUser($user->id)
             ->whereMonth('date', $currentMonth)
             ->whereYear('date', $currentYear)
             ->sum('amount');
+
+        // Current month savings
+        $currentMonthSavings = $currentMonthIncome - $currentMonthExpenses;
 
         // Today's expenses
         $todayExpenses = Expense::forUser($user->id)
@@ -98,7 +107,9 @@ class DashboardController extends Controller
             'totalIncome',
             'totalExpenses',
             'totalSavings',
+            'currentMonthIncome',
             'currentMonthExpenses',
+            'currentMonthSavings',
             'todayExpenses',
             'categoryExpenses',
             'monthlyTrend',
